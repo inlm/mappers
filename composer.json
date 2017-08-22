@@ -1,0 +1,22 @@
+{
+	"name": "inlm/mappers",
+	"type": "library",
+	"description": "Mappers for Lean Mapper.",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Jan Pecha",
+			"homepage": "https://www.janpecha.cz/"
+		}
+	],
+	"require": {
+		"php": ">=5.4.0",
+		"tharos/leanmapper": "^2.2 || ^3.0"
+	},
+	"autoload": {
+		"classmap": ["src/"]
+	},
+	"require-dev": {
+		"nette/tester": "^1.7"
+	}
+}

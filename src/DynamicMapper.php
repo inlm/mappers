@@ -131,7 +131,7 @@
 		 */
 		public function getRelationshipTable($sourceTable, $targetTable)
 		{
-			return $this->fallback->getEntityField($table, $column);
+			return $this->fallback->getRelationshipTable($sourceTable, $targetTable);
 		}
 
 

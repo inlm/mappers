@@ -1,6 +1,8 @@
 
 # Inlm\Mappers
 
+[![Build Status](https://travis-ci.org/inlm/mappers.svg?branch=master)](https://travis-ci.org/inlm/mappers)
+
 Mappers for Lean Mapper.
 
 

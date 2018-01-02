@@ -26,6 +26,7 @@ composer require inlm/mappers
 | `Inlm\Mappers\CamelCaseMapper`  | `OrderItem` | `orderItem`  | `customerName`  | There is [issue](https://dev.mysql.com/doc/refman/5.5/en/identifier-case-sensitivity.html) for MySQL on OS Windows.
 | `Inlm\Mappers\UnderScoreMapper` | `OrderItem` | `order_item` | `customer_name` |
 | `Inlm\Mappers\DynamicMapper`    | ~           | ~            | ~               | See below.
+| `Inlm\Mappers\PrefixMapper`     | ~           | ~            | ~               | See below.
 
 
 ### DynamicMapper
@@ -50,6 +51,26 @@ $mapper->getTable('OrderItem'); // returns 'orderitem'
 
 $mapper = new DynamicMapper(new Inlm\Mappers\UnderScoreMapper);
 $mapper->getTable('OrderItem'); // returns 'order_item'
+```
+
+
+### PrefixMapper
+
+PrefixMapper adds & removes prefix from table names.
+
+``` php
+$mapper = new PrefixMapper('prefix_');
+$mapper = new PrefixMapper('prefix_', $fallbackMapper);
+```
+
+PrefixMapper only processes prefixes in table names, everything else is given to fallback mapper (`LeanMapper\DefaultMapper` by default):
+
+``` php
+$mapper = new PrefixMapper('prefix_');
+echo $mapper->getTable('OrderItem'); // prints 'prefix_orderitem'
+
+$mapper = new PrefixMapper('prefix_', new Inlm\Mappers\UnderScoreMapper);
+echo $mapper->getTable('OrderItem'); // prints 'prefix_order_item'
 ```
 
 

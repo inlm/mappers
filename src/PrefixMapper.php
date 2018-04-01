@@ -20,11 +20,11 @@
 
 
 		/**
-		 * @param  string
+		 * @param  string|NULL
 		 */
 		public function __construct($prefix = '', IMapper $fallback = NULL)
 		{
-			$this->prefix = $prefix;
+			$this->prefix = (string) $prefix;
 			$this->prefixLength = strlen($prefix);
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}

@@ -18,3 +18,9 @@ test(function () {
 	Assert::same('prefix_orderItem', $mapper->getTableByRepositoryClass('OrderItemRepository'));
 	Assert::same(array(), $mapper->getImplicitFilters('OrderItem', NULL));
 });
+
+
+test(function () {
+	$mapper = new Inlm\Mappers\PrefixMapper(NULL);
+	Assert::same('orderitem', $mapper->getTable('OrderItem'));
+});

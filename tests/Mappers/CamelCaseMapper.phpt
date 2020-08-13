@@ -16,5 +16,5 @@ test(function () {
 	Assert::same('invoice_orderItem', $mapper->getRelationshipTable('invoice', 'orderItem'));
 	Assert::same('orderItem_id', $mapper->getRelationshipColumn('order', 'orderItem'));
 	Assert::same('orderItem', $mapper->getTableByRepositoryClass('OrderItemRepository'));
-	Assert::same(array(), $mapper->getImplicitFilters('OrderItem', NULL));
+	Assert::same([], $mapper->getImplicitFilters('OrderItem', NULL));
 });

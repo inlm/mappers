@@ -20,7 +20,7 @@
 		 */
 		public function getTableByRepositoryClass($repositoryClass)
 		{
-			$matches = array();
+			$matches = [];
 
 			if (preg_match('#([a-z0-9]+)repository$#i', $repositoryClass, $matches)) {
 				return lcfirst($matches[1]);

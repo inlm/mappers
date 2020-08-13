@@ -23,8 +23,6 @@ before_script:
     - travis_retry composer install --no-interaction --prefer-dist
     - travis_retry composer create-project nette/code-checker temp/code-checker ~2
 
-sudo: false
-
 cache:
     directories:
         - $HOME/.composer/cache

@@ -7,18 +7,12 @@
 
 	class UnderScoreMapper extends DefaultMapper
 	{
-		/**
-		 * @inheritdoc
-		 */
 		public function getTable($entityClass)
 		{
 			return self::toUnderScore($this->trimNamespace($entityClass));
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getEntityClass($table, LeanMapper\Row $row = NULL)
 		{
 			return ($this->defaultEntityNamespace !== NULL ? $this->defaultEntityNamespace . '\\' : '')
@@ -26,27 +20,18 @@
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getColumn($entityClass, $field)
 		{
 			return self::toUnderScore($field);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getEntityField($table, $column)
 		{
 			return self::toCamelCase($column);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getTableByRepositoryClass($repositoryClass)
 		{
 			$matches = [];

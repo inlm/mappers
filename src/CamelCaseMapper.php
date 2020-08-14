@@ -5,19 +5,12 @@
 
 	class CamelCaseMapper extends DefaultMapper
 	{
-		/**
-		 * @inheritdoc
-		 */
 		public function getTable($entityClass)
 		{
 			return lcfirst($this->trimNamespace($entityClass));
 		}
 
 
-
-		/**
-		 * @inheritdoc
-		 */
 		public function getTableByRepositoryClass($repositoryClass)
 		{
 			$matches = [];

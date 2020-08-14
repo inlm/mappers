@@ -69,9 +69,6 @@
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getPrimaryKey($table)
 		{
 			if (isset($this->tablePrimaryKey[$table])) {
@@ -82,9 +79,6 @@
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getTable($entityClass)
 		{
 			if (isset($this->entityToTable[$entityClass])) {
@@ -95,9 +89,6 @@
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getEntityClass($table, Row $row = NULL)
 		{
 			if (isset($this->tableToEntity[$table])) {
@@ -108,45 +99,30 @@
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getColumn($entityClass, $field)
 		{
 			return $this->fallback->getColumn($entityClass, $field);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getEntityField($table, $column)
 		{
 			return $this->fallback->getEntityField($table, $column);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getRelationshipTable($sourceTable, $targetTable)
 		{
 			return $this->fallback->getRelationshipTable($sourceTable, $targetTable);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getRelationshipColumn($sourceTable, $targetTable)
 		{
 			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable);
 		}
 
 
-		/**
-		 * @inheritdoc
-		 */
 		public function getTableByRepositoryClass($repositoryClass)
 		{
 			if (isset($this->repositoryToTable[$repositoryClass])) {
@@ -157,9 +133,6 @@
 		}
 
 
-		/*
-		 * @inheritdoc
-		 */
 		public function getImplicitFilters($entityClass, Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);

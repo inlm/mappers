@@ -1,7 +1,7 @@
 
 # Inlm\Mappers
 
-[![Build Status](https://travis-ci.org/inlm/mappers.svg?branch=master)](https://travis-ci.org/inlm/mappers)
+[![Tests Status](https://github.com/inlm/mappers/workflows/Tests/badge.svg)](https://github.com/inlm/mappers/actions)
 
 Mappers for Lean Mapper.
 

@@ -77,7 +77,7 @@ test(function () {
 	$mapper->registerStiType(Model\Entity\Client::class, 'company', Model\Entity\ClientCompany::class);
 	$mapper->registerTypeField(Model\Entity\Client::class, 'clientType');
 
-	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'lazy' => TRUE]));
+	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'file' => __DIR__ . '/db.sq3', 'lazy' => TRUE]));
 	$fluent->select('*')->from('client');
 	$mapper->applyStiMapping($fluent, Model\Entity\ClientCompany::class);
 

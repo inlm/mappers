@@ -3,16 +3,16 @@
 	namespace Inlm\Mappers;
 
 	use LeanMapper\Caller;
-	use LeanMapper\IRowMapper;
+	use LeanMapper\IMapper;
 	use LeanMapper\Row;
 
 
-	class RowMapper implements IRowMapper
+	class RowMapper implements IMapper
 	{
 		const FROM_DB_VALUE = 0;
 		const TO_DB_VALUE = 1;
 
-		/** @var IRowMapper */
+		/** @var IMapper */
 		private $fallback;
 
 		/** @var array [tableName => column => [convertToRow, convertFromRow]] */
@@ -22,18 +22,16 @@
 		private $multiMapping = [];
 
 
-		public function __construct(IRowMapper $fallback = NULL)
+		public function __construct(IMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
 
 
 		/**
-		 * @param  string
-		 * @param  string
 		 * @return static
 		 */
-		public function registerFieldMapping($entity, $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
+		public function registerFieldMapping(string $entity, string $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
 		{
 			if ($fromDbValue === NULL && $toDbValue === NULL) {
 				throw new InvalidArgumentException("Missing convertors for $entity::\$$field, both are NULL.");
@@ -55,11 +53,9 @@
 
 
 		/**
-		 * @param  string
-		 * @param  string
 		 * @return static
 		 */
-		public function registerMultiValueMapping($entity, $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
+		public function registerMultiValueMapping(string $entity, string $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
 		{
 			if ($fromDbValue === NULL && $toDbValue === NULL) {
 				throw new InvalidArgumentException("Missing convertors for $entity::\$$field, both are NULL.");
@@ -80,61 +76,61 @@
 		}
 
 
-		public function getPrimaryKey($table)
+		public function getPrimaryKey(string $table): string
 		{
 			return $this->fallback->getPrimaryKey($table);
 		}
 
 
-		public function getTable($entityClass)
+		public function getTable(string $entityClass): string
 		{
 			return $this->fallback->getTable($entityClass);
 		}
 
 
-		public function getEntityClass($table, Row $row = NULL)
+		public function getEntityClass(string $table, Row $row = NULL): string
 		{
 			return $this->fallback->getEntityClass($table, $row);
 		}
 
 
-		public function getColumn($entityClass, $field)
+		public function getColumn(string $entityClass, string $field): string
 		{
 			return $this->fallback->getColumn($entityClass, $field);
 		}
 
 
-		public function getEntityField($table, $column)
+		public function getEntityField(string $table, string $column): string
 		{
 			return $this->fallback->getEntityField($table, $column);
 		}
 
 
-		public function getRelationshipTable($sourceTable, $targetTable)
+		public function getRelationshipTable(string $sourceTable, string $targetTable): string
 		{
 			return $this->fallback->getRelationshipTable($sourceTable, $targetTable);
 		}
 
 
-		public function getRelationshipColumn($sourceTable, $targetTable)
+		public function getRelationshipColumn(string $sourceTable, string $targetTable, ?string $relationshipName = NULL): string
 		{
 			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable);
 		}
 
 
-		public function getTableByRepositoryClass($repositoryClass)
+		public function getTableByRepositoryClass(string $repositoryClass): string
 		{
 			return $this->fallback->getTableByRepositoryClass($repositoryClass);
 		}
 
 
-		public function getImplicitFilters($entityClass, Caller $caller = null)
+		public function getImplicitFilters(string $entityClass, Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
 		}
 
 
-		public function convertToRowData($table, array $values)
+		public function convertToRowData(string $table, array $values): array
 		{
 			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
 				foreach ($values as $column => $value) {
@@ -170,7 +166,7 @@
 		}
 
 
-		public function convertFromRowData($table, array $data)
+		public function convertFromRowData(string $table, array $data): array
 		{
 			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
 				if (isset($this->multiMapping[$table])) {

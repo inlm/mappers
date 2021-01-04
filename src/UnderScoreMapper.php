@@ -7,32 +7,32 @@
 
 	class UnderScoreMapper extends DefaultMapper
 	{
-		public function getTable($entityClass)
+		public function getTable(string $entityClass): string
 		{
-			return self::toUnderScore($this->trimNamespace($entityClass));
+			return self::toUnderScore(\LeanMapper\Helpers::trimNamespace($entityClass));
 		}
 
 
-		public function getEntityClass($table, LeanMapper\Row $row = NULL)
+		public function getEntityClass(string $table, ?LeanMapper\Row $row = null): string
 		{
 			return ($this->defaultEntityNamespace !== NULL ? $this->defaultEntityNamespace . '\\' : '')
 				. ucfirst(self::toCamelCase($table));
 		}
 
 
-		public function getColumn($entityClass, $field)
+		public function getColumn(string $entityClass, string $field): string
 		{
 			return self::toUnderScore($field);
 		}
 
 
-		public function getEntityField($table, $column)
+		public function getEntityField(string $table, string $column): string
 		{
 			return self::toCamelCase($column);
 		}
 
 
-		public function getTableByRepositoryClass($repositoryClass)
+		public function getTableByRepositoryClass(string $repositoryClass): string
 		{
 			$matches = [];
 
@@ -44,11 +44,7 @@
 		}
 
 
-		/**
-		 * @param  string
-		 * @return string
-		 */
-		protected static function toUnderScore($s)
+		protected static function toUnderScore(string $s): string
 		{
 			return lcfirst(preg_replace_callback('#(?<=.)([A-Z])#', function ($m) {
 				return '_' . strtolower($m[1]);
@@ -56,11 +52,7 @@
 		}
 
 
-		/**
-		 * @param  string
-		 * @return string
-		 */
-		protected static function toCamelCase($s)
+		protected static function toCamelCase(string $s): string
 		{
 			return preg_replace_callback('#_(.)#', function ($m) {
 				return strtoupper($m[1]);

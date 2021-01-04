@@ -3,13 +3,13 @@
 	namespace Inlm\Mappers;
 
 	use LeanMapper\Caller;
-	use LeanMapper\IRowMapper;
+	use LeanMapper\IMapper;
 	use LeanMapper\Row;
 
 
-	class DynamicMapper implements IRowMapper
+	class DynamicMapper implements IMapper
 	{
-		/** @var IRowMapper */
+		/** @var IMapper */
 		protected $fallback;
 
 		/** @var array  [tableName => entityClass] */
@@ -25,7 +25,7 @@
 		protected $repositoryToTable;
 
 
-		public function __construct(IRowMapper $fallback = NULL)
+		public function __construct(IMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
@@ -38,7 +38,7 @@
 		 * @param  string|NULL
 		 * @return static
 		 */
-		public function setMapping($tableName, $entityClass = NULL, $repositoryClass = NULL, $primaryKey = NULL)
+		public function setMapping(string $tableName, ?string $entityClass = NULL, ?string $repositoryClass = NULL, ?string $primaryKey = NULL): self
 		{
 			if (isset($this->tableToEntity[$tableName])) {
 				throw new DuplicateException("Table '$tableName' is already registered for entity " . $this->tableToEntity[$tableName]);
@@ -69,7 +69,7 @@
 		}
 
 
-		public function getPrimaryKey($table)
+		public function getPrimaryKey(string $table): string
 		{
 			if (isset($this->tablePrimaryKey[$table])) {
 				return $this->tablePrimaryKey[$table];
@@ -79,7 +79,7 @@
 		}
 
 
-		public function getTable($entityClass)
+		public function getTable(string $entityClass): string
 		{
 			if (isset($this->entityToTable[$entityClass])) {
 				return $this->entityToTable[$entityClass];
@@ -89,7 +89,7 @@
 		}
 
 
-		public function getEntityClass($table, Row $row = NULL)
+		public function getEntityClass(string $table, ?Row $row = NULL): string
 		{
 			if (isset($this->tableToEntity[$table])) {
 				return $this->tableToEntity[$table];
@@ -99,31 +99,31 @@
 		}
 
 
-		public function getColumn($entityClass, $field)
+		public function getColumn(string $entityClass, string $field): string
 		{
 			return $this->fallback->getColumn($entityClass, $field);
 		}
 
 
-		public function getEntityField($table, $column)
+		public function getEntityField(string $table, string $column): string
 		{
 			return $this->fallback->getEntityField($table, $column);
 		}
 
 
-		public function getRelationshipTable($sourceTable, $targetTable)
+		public function getRelationshipTable(string $sourceTable, string $targetTable): string
 		{
 			return $this->fallback->getRelationshipTable($sourceTable, $targetTable);
 		}
 
 
-		public function getRelationshipColumn($sourceTable, $targetTable)
+		public function getRelationshipColumn(string $sourceTable, string $targetTable, ?string $relationshipName = NULL): string
 		{
-			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable);
+			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable, $relationshipName);
 		}
 
 
-		public function getTableByRepositoryClass($repositoryClass)
+		public function getTableByRepositoryClass(string $repositoryClass): string
 		{
 			if (isset($this->repositoryToTable[$repositoryClass])) {
 				return $this->repositoryToTable[$repositoryClass];
@@ -133,19 +133,19 @@
 		}
 
 
-		public function getImplicitFilters($entityClass, Caller $caller = null)
+		public function getImplicitFilters(string $entityClass, ?Caller $caller = NULL)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
 		}
 
 
-		public function convertToRowData($table, array $values)
+		public function convertToRowData(string $table, array $values): array
 		{
 			return $this->fallback->convertToRowData($table, $values);
 		}
 
 
-		public function convertFromRowData($table, array $data)
+		public function convertFromRowData(string $table, array $data): array
 		{
 			return $this->fallback->convertFromRowData($table, $values);
 		}

@@ -30,6 +30,7 @@ composer require inlm/mappers
 | `Inlm\Mappers\UnderScoreMapper` | `OrderItem` | `order_item` | `customer_name` |
 | `Inlm\Mappers\DynamicMapper`    | ~           | ~            | ~               | See below.
 | `Inlm\Mappers\PrefixMapper`     | ~           | ~            | ~               | See below.
+| `Inlm\Mappers\StiMapper`        | ~           | ~            | ~               | See below.
 
 
 ### DynamicMapper
@@ -76,6 +77,29 @@ $mapper = new PrefixMapper('prefix_', new Inlm\Mappers\UnderScoreMapper);
 echo $mapper->getTable('OrderItem'); // prints 'prefix_order_item'
 ```
 
+
+### StiMapper
+
+StiMapper simplifies working with Single Table Inheritance.
+
+``` php
+$mapper = new StiMapper;
+$mapper = new StiMapper($fallbackMapper);
+```
+
+Registration of STI types:
+
+``` php
+$mapper->registerStiType($baseEntity, $typeValue, $entityClass);
+$mapper->registerStiType(Entities\Client::class, 'company', Entities\ClientCompany::class);
+$mapper->registerStiType(Entities\Client::class, 'individual', Entities\ClientIndividual::class);
+```
+
+Default STI type column is named `type`, you can change it with:
+
+``` php
+$mapper->registerTypeField(Entities\Client::class, 'clientType');
+```
 
 ### How change default entity namespace
 

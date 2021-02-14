@@ -137,34 +137,29 @@
 		public function convertToRowData($table, array $values)
 		{
 			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
-				$res = [];
-
 				foreach ($values as $column => $value) {
 					if (isset($this->mapping[$table][$column][self::FROM_DB_VALUE])) {
-						$res[$column] = call_user_func($this->mapping[$table][$column][self::FROM_DB_VALUE], $value);
-
-					} else {
-						$res[$column] = $value;
+						$values[$column] = call_user_func($this->mapping[$table][$column][self::FROM_DB_VALUE], $value);
 					}
 				}
 
 				if (isset($this->multiMapping[$table])) {
-					$values = $res;
+					$origValues = $values;
 
 					foreach ($this->multiMapping[$table] as $rowField => $convertors) {
 						if (!isset($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE])) {
 							continue;
 						}
 
-						if (array_key_exists($rowField, $res)) {
+						if (array_key_exists($rowField, $values)) {
 							throw new DuplicateException("Row field '$rowField' already exists.");
 						}
 
-						$res[$rowField] = call_user_func($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE], $values, $rowField);
+						$values[$rowField] = call_user_func($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE], $origValues, $rowField);
 					}
 				}
 
-				return $res;
+				return $values;
 			}
 
 			return $this->fallback->convertToRowData($table, $values);
@@ -203,14 +198,11 @@
 
 				foreach ($data as $column => $value) {
 					if (isset($this->mapping[$table][$column][self::TO_DB_VALUE])) {
-						$res[$column] = call_user_func($this->mapping[$table][$column][self::TO_DB_VALUE], $value);
-
-					} else {
-						$res[$column] = $value;
+						$data[$column] = call_user_func($this->mapping[$table][$column][self::TO_DB_VALUE], $value);
 					}
 				}
 
-				return $res;
+				return $data;
 			}
 
 			return $this->fallback->convertFromRowData($table, $data);

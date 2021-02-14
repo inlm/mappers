@@ -3,16 +3,16 @@
 	namespace Inlm\Mappers;
 
 	use LeanMapper\Caller;
-	use LeanMapper\IMapper;
+	use LeanMapper\IRowMapper;
 	use LeanMapper\Row;
 
 
-	class PrefixMapper implements IMapper
+	class PrefixMapper implements IRowMapper
 	{
 		/** @var string */
 		protected $prefix;
 
-		/** @var IMapper */
+		/** @var IRowMapper */
 		protected $fallback;
 
 		/** @var int */
@@ -22,7 +22,7 @@
 		/**
 		 * @param  string|NULL
 		 */
-		public function __construct($prefix = '', IMapper $fallback = NULL)
+		public function __construct($prefix = '', IRowMapper $fallback = NULL)
 		{
 			$this->prefix = (string) $prefix;
 			$this->prefixLength = strlen($prefix);
@@ -81,6 +81,18 @@
 		public function getImplicitFilters($entityClass, Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
+		}
+
+
+		public function convertToRowData($table, array $values)
+		{
+			return $this->fallback->convertToRowData($this->removePrefix($table), $values);
+		}
+
+
+		public function convertFromRowData($table, array $data)
+		{
+			return $this->fallback->convertFromRowData($this->removePrefix($table), $data);
 		}
 
 

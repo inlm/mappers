@@ -118,6 +118,14 @@ $mapper = new Inlm\Mappers\UnderScoreMapper('App\Entity');
 ```
 
 
+### Recommended order of mappers
+
+* `StiMapper`
+* `PrefixMapper`
+* `DynamicMapper`
+* `DefaultMapper` / `CamelCaseMapper` / `UnderScoreMapper`
+
+
 ------------------------------
 
 License: [New BSD License](license.md)

@@ -86,6 +86,15 @@ test(function () {
 
 	$rowData = $mapper->convertToRowData('client', $dbData);
 	Assert::same($dbData, $mapper->convertFromRowData('client', $rowData));
+
+	$dbData = [
+		'id' => 2,
+		'website' => NULL,
+		'name' => 'Client XYZ',
+	];
+
+	$rowData = $mapper->convertToRowData('client', $dbData);
+	Assert::same($dbData, $mapper->convertFromRowData('client', $rowData));
 });
 
 

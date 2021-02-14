@@ -138,6 +138,10 @@
 		{
 			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
 				foreach ($values as $column => $value) {
+					if ($value === NULL) {
+						continue;
+					}
+
 					if (isset($this->mapping[$table][$column][self::FROM_DB_VALUE])) {
 						$values[$column] = call_user_func($this->mapping[$table][$column][self::FROM_DB_VALUE], $value);
 					}
@@ -197,6 +201,10 @@
 				}
 
 				foreach ($data as $column => $value) {
+					if ($value === NULL) {
+						continue;
+					}
+
 					if (isset($this->mapping[$table][$column][self::TO_DB_VALUE])) {
 						$data[$column] = call_user_func($this->mapping[$table][$column][self::TO_DB_VALUE], $value);
 					}

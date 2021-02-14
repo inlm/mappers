@@ -138,4 +138,22 @@
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
 		}
+
+
+		public function applyStiMapping(\LeanMapper\Fluent $fluent, $entityClass)
+		{
+			if (isset($this->stiEntities[$entityClass])) {
+				$baseEntity = $this->stiEntities[$entityClass];
+				$table = $this->getTable($baseEntity);
+				$column = isset($this->stiTypeColumns[$baseEntity]) ? $this->stiTypeColumns[$baseEntity] : self::STI_TYPE_COLUMN;
+				$typeValue = NULL;
+
+				foreach ($this->stiTypes[$baseEntity] as $type => $typeEntity) {
+					if ($typeEntity === $entityClass) {
+						$fluent->where('%n.%n = %s', $table, $column, $type);
+						break;
+					}
+				}
+			}
+		}
 	}

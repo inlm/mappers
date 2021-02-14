@@ -101,6 +101,14 @@ Default STI type column is named `type`, you can change it with:
 $mapper->registerTypeField(Entities\Client::class, 'clientType');
 ```
 
+You can limit `LeanMapper\Fluent` for specific STI type:
+
+``` php
+$fluent = $connection->select('*')->from('client');
+$mapper->applyStiMapping($fluent, Entities\ClientCompany::class);
+echo $fluent; // SELECT * FROM `client` WHERE `client`.`clientType` = 'company'
+```
+
 ### How change default entity namespace
 
 ``` php

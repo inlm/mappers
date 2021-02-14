@@ -70,6 +70,21 @@ test(function () {
 });
 
 
+// fluent mapping
+test(function () {
+	$mapper = new Inlm\Mappers\StiMapper;
+	$mapper->registerStiType(Model\Entity\Client::class, 'individual', Model\Entity\ClientIndividual::class);
+	$mapper->registerStiType(Model\Entity\Client::class, 'company', Model\Entity\ClientCompany::class);
+	$mapper->registerTypeField(Model\Entity\Client::class, 'clientType');
+
+	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'lazy' => TRUE]));
+	$fluent->select('*')->from('client');
+	$mapper->applyStiMapping($fluent, Model\Entity\ClientCompany::class);
+
+	Assert::same('SELECT * FROM [client] WHERE [client].[clientType] = \'company\'', (string) $fluent);
+});
+
+
 // error - duplicated entity class
 test(function () {
 	$mapper = new Inlm\Mappers\StiMapper;

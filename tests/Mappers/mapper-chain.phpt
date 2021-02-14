@@ -20,7 +20,16 @@ $stiMapper = new Inlm\Mappers\StiMapper($prefixMapper);
 $stiMapper->registerTypeField(Foo\Entities\Client::class, 'clientType');
 $stiMapper->registerStiType(Foo\Entities\Client::class, 'company', Foo\Entities\ClientCompany::class);
 
-$mapper = $stiMapper;
+$rowMapper = new Inlm\Mappers\RowMapper($stiMapper);
+$rowMapper->registerFieldMapping(
+	Foo\Entities\ClientCompany::class,
+	'name',
+	function ($dbValue) {
+		return strtoupper($dbValue);
+	}
+);
+
+$mapper = $rowMapper;
 
 
 test(function () use ($mapper) {
@@ -56,6 +65,14 @@ test(function () use ($mapper) {
 	Assert::same('prefix_user_role', $mapper->getTableByRepositoryClass(Foo\Repositories\UserRoleRepository::class));
 	Assert::same('prefix_orderItems', $mapper->getTableByRepositoryClass(Foo\Repositories\OrderItemRepository::class));
 	Assert::same('prefix_client', $mapper->getTableByRepositoryClass(Foo\Repositories\ClientRepository::class));
+
+	Assert::same([
+		'id' => 1,
+		'name' => 'CLIENT ABC',
+	], $mapper->convertToRowData('prefix_client', [
+		'id' => 1,
+		'name' => 'Client ABC',
+	]));
 });
 
 

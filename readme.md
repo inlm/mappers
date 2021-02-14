@@ -30,6 +30,7 @@ composer require inlm/mappers
 | `Inlm\Mappers\UnderScoreMapper` | `OrderItem` | `order_item` | `customer_name` |
 | `Inlm\Mappers\DynamicMapper`    | ~           | ~            | ~               | See below.
 | `Inlm\Mappers\PrefixMapper`     | ~           | ~            | ~               | See below.
+| `Inlm\Mappers\RowMapper`        | ~           | ~            | ~               | See below.
 | `Inlm\Mappers\StiMapper`        | ~           | ~            | ~               | See below.
 
 
@@ -78,6 +79,27 @@ echo $mapper->getTable('OrderItem'); // prints 'prefix_order_item'
 ```
 
 
+### RowMapper
+
+RowMapper maps values to / from `LeanMapper\Row` (requires Lean Mapper 3.5+).
+
+``` php
+$mapper = new RowMapper;
+$mapper = new RowMapper($fallbackMapper);
+$mapper->registerFieldMapping($entity, $field, $fromDbValue, $toDbValue);
+$mapper->registerFieldMapping(
+	Model\Entity\Client::class,
+	'website',
+	function ($dbValue) {
+		return new Website($dbValue);
+	},
+	function (Website $rowValue) {
+		return $rowValue->getUrl();
+	}
+);
+```
+
+
 ### StiMapper
 
 StiMapper simplifies working with Single Table Inheritance.
@@ -120,6 +142,7 @@ $mapper = new Inlm\Mappers\UnderScoreMapper('App\Entity');
 
 ### Recommended order of mappers
 
+* `RowMapper`
 * `StiMapper`
 * `PrefixMapper`
 * `DynamicMapper`

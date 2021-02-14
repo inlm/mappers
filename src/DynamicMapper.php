@@ -3,13 +3,13 @@
 	namespace Inlm\Mappers;
 
 	use LeanMapper\Caller;
-	use LeanMapper\IMapper;
+	use LeanMapper\IRowMapper;
 	use LeanMapper\Row;
 
 
-	class DynamicMapper implements IMapper
+	class DynamicMapper implements IRowMapper
 	{
-		/** @var IMapper */
+		/** @var IRowMapper */
 		protected $fallback;
 
 		/** @var array  [tableName => entityClass] */
@@ -25,7 +25,7 @@
 		protected $repositoryToTable;
 
 
-		public function __construct(IMapper $fallback = NULL)
+		public function __construct(IRowMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
@@ -136,5 +136,17 @@
 		public function getImplicitFilters($entityClass, Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
+		}
+
+
+		public function convertToRowData($table, array $values)
+		{
+			return $this->fallback->convertToRowData($table, $values);
+		}
+
+
+		public function convertFromRowData($table, array $data)
+		{
+			return $this->fallback->convertFromRowData($table, $values);
 		}
 	}

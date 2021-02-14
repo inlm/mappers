@@ -162,12 +162,15 @@ test(function () {
 		Model\OrderItem::class,
 		'price',
 		function (array $values, $rowField) {
+			if ($values[$rowField . '_total'] === NULL && $values[$rowField . '_currency'] === NULL) {
+				return NULL;
+			}
 			return new Price($values[$rowField . '_total'], $values[$rowField . '_currency']);
 		},
-		function (Price $price, $rowField) {
+		function (Price $price = NULL, $rowField) {
 			return [
-				$rowField . '_total' => $price->getPrice(),
-				$rowField . '_currency' => $price->getCurrency(),
+				$rowField . '_total' => $price ? $price->getPrice() : NULL,
+				$rowField . '_currency' => $price ? $price->getCurrency() : NULL,
 			];
 		}
 	);
@@ -180,6 +183,16 @@ test(function () {
 
 	$rowData = $mapper->convertToRowData('orderitem', $dbData);
 	Assert::same('EUR', $rowData['price_currency']);
+	Assert::same($dbData, $mapper->convertFromRowData('orderitem', $rowData));
+
+	$dbData = [
+		'id' => 2,
+		'price_total' => NULL,
+		'price_currency' => NULL,
+	];
+
+	$rowData = $mapper->convertToRowData('orderitem', $dbData);
+	Assert::null($rowData['price_currency']);
 	Assert::same($dbData, $mapper->convertFromRowData('orderitem', $rowData));
 });
 

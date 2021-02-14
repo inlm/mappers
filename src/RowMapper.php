@@ -18,6 +18,9 @@
 		/** @var array [tableName => column => [convertToRow, convertFromRow]] */
 		private $mapping = [];
 
+		/** @var array [tableName => rowField => [convertToRow, convertFromRow]] */
+		private $multiMapping = [];
+
 
 		public function __construct(IRowMapper $fallback = NULL)
 		{
@@ -44,6 +47,32 @@
 			}
 
 			$this->mapping[$table][$column] = [
+				self::FROM_DB_VALUE => $fromDbValue,
+				self::TO_DB_VALUE => $toDbValue
+			];
+			return $this;
+		}
+
+
+		/**
+		 * @param  string
+		 * @param  string
+		 * @return static
+		 */
+		public function registerMultiValueMapping($entity, $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
+		{
+			if ($fromDbValue === NULL && $toDbValue === NULL) {
+				throw new InvalidArgumentException("Missing convertors for $entity::\$$field, both are NULL.");
+			}
+
+			$table = $this->getTable($entity);
+			$rowField = $this->getColumn($entity, $field);
+
+			if (isset($this->multiMapping[$table][$rowField])) {
+				throw new \Inlm\Mappers\DuplicateException("Multi convertor for table '$table' and row field '$rowField' ($entity::\$$field) already exists.");
+			}
+
+			$this->multiMapping[$table][$rowField] = [
 				self::FROM_DB_VALUE => $fromDbValue,
 				self::TO_DB_VALUE => $toDbValue
 			];
@@ -107,7 +136,7 @@
 
 		public function convertToRowData($table, array $values)
 		{
-			if (isset($this->mapping[$table])) {
+			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
 				$res = [];
 
 				foreach ($values as $column => $value) {
@@ -116,6 +145,22 @@
 
 					} else {
 						$res[$column] = $value;
+					}
+				}
+
+				if (isset($this->multiMapping[$table])) {
+					$values = $res;
+
+					foreach ($this->multiMapping[$table] as $rowField => $convertors) {
+						if (!isset($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE])) {
+							continue;
+						}
+
+						if (array_key_exists($rowField, $res)) {
+							throw new DuplicateException("Row field '$rowField' already exists.");
+						}
+
+						$res[$rowField] = call_user_func($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE], $values, $rowField);
 					}
 				}
 
@@ -128,8 +173,33 @@
 
 		public function convertFromRowData($table, array $data)
 		{
-			if (isset($this->mapping[$table])) {
-				$res = [];
+			if (isset($this->mapping[$table]) || isset($this->multiMapping[$table])) {
+				if (isset($this->multiMapping[$table])) {
+					$res = [];
+
+					foreach ($data as $rowField => $value) {
+						if (isset($this->multiMapping[$table][$rowField][self::TO_DB_VALUE])) {
+							$fieldValues = call_user_func($this->multiMapping[$table][$rowField][self::TO_DB_VALUE], $value, $rowField);
+
+							if (!is_array($fieldValues)) {
+								throw new InvalidStateException('Return value from multi convertor must be array.');
+							}
+
+							foreach ($fieldValues as $column => $value) {
+								// if (array_key_exists($column, $data)) {
+									// throw new InvalidStateException("Column '$column' already exists in result.");
+								// }
+
+								$res[$column] = $value;
+							}
+
+						} else {
+							$res[$rowField] = $value;
+						}
+					}
+
+					$data = $res;
+				}
 
 				foreach ($data as $column => $value) {
 					if (isset($this->mapping[$table][$column][self::TO_DB_VALUE])) {

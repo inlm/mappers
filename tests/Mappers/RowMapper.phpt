@@ -23,6 +23,32 @@ class Website
 }
 
 
+class Price
+{
+	private $price;
+	private $currency;
+
+
+	public function __construct($price, $currency)
+	{
+		$this->price = $price;
+		$this->currency = $currency;
+	}
+
+
+	public function getPrice()
+	{
+		return $this->price;
+	}
+
+
+	public function getCurrency()
+	{
+		return $this->currency;
+	}
+}
+
+
 test(function () {
 	$mapper = new Inlm\Mappers\RowMapper;
 
@@ -108,6 +134,46 @@ test(function () {
 		'name' => 'client abc',
 	], $mapper->convertFromRowData('client', $rowData));
 });
+
+
+// multi column mapping
+test(function () {
+	$mapper = new Inlm\Mappers\RowMapper;
+	$mapper->registerFieldMapping(
+		Model\OrderItem::class,
+		'price_currency',
+		function ($value) {
+			return strtoupper($value);
+		},
+		function ($value) {
+			return strtolower($value);
+		}
+	);
+	$mapper->registerMultiValueMapping(
+		Model\OrderItem::class,
+		'price',
+		function (array $values, $rowField) {
+			return new Price($values[$rowField . '_total'], $values[$rowField . '_currency']);
+		},
+		function (Price $price, $rowField) {
+			return [
+				$rowField . '_total' => $price->getPrice(),
+				$rowField . '_currency' => $price->getCurrency(),
+			];
+		}
+	);
+
+	$dbData = [
+		'id' => 1,
+		'price_total' => 1234,
+		'price_currency' => 'eur',
+	];
+
+	$rowData = $mapper->convertToRowData('orderitem', $dbData);
+	Assert::same('EUR', $rowData['price_currency']);
+	Assert::same($dbData, $mapper->convertFromRowData('orderitem', $rowData));
+});
+
 
 
 // error - duplicated mapping

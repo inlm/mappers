@@ -97,6 +97,22 @@ $mapper->registerFieldMapping(
 		return $rowValue->getUrl();
 	}
 );
+
+
+// multi column mapping
+$mapper->registerMultiValueMapping(
+	Model\OrderItem::class,
+	'price',
+	function (array $values, $rowField) {
+		return new Price($values[$rowField . '_total'], $values[$rowField . '_currency']);
+	},
+	function (Price $price, $rowField) {
+		return [
+			$rowField . '_total' => $price->getPrice(),
+			$rowField . '_currency' => $price->getCurrency(),
+		];
+	}
+);
 ```
 
 

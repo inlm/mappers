@@ -155,10 +155,6 @@
 							continue;
 						}
 
-						if (array_key_exists($rowField, $values)) {
-							throw new DuplicateException("Row field '$rowField' already exists.");
-						}
-
 						$values[$rowField] = call_user_func($this->multiMapping[$table][$rowField][self::FROM_DB_VALUE], $origValues, $rowField);
 					}
 				}

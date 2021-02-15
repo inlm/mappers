@@ -26,7 +26,7 @@ function createRow(array $data)
 
 function createFluent($tableName)
 {
-	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'lazy' => TRUE]));
+	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'file' => __DIR__ . '/db.sq3', 'lazy' => TRUE]));
 	$fluent->select('*')->from($tableName);
 	return $fluent;
 }

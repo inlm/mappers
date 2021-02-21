@@ -66,6 +66,9 @@ test(function () use ($mapper) {
 	Assert::same('prefix_orderItems', $mapper->getTableByRepositoryClass(Foo\Repositories\OrderItemRepository::class));
 	Assert::same('prefix_client', $mapper->getTableByRepositoryClass(Foo\Repositories\ClientRepository::class));
 
+	Assert::same('file_id', $mapper->getRelationshipColumn('website', 'file'));
+	Assert::same('relationship_id', $mapper->getRelationshipColumn('website', 'file', 'relationship'));
+
 	Assert::same([
 		'id' => 1,
 		'name' => 'CLIENT ABC',

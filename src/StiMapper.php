@@ -122,9 +122,9 @@
 		}
 
 
-		public function getRelationshipColumn($sourceTable, $targetTable)
+		public function getRelationshipColumn($sourceTable, $targetTable, $relationshipName = NULL)
 		{
-			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable);
+			return $this->fallback->getRelationshipColumn($sourceTable, $targetTable, $relationshipName);
 		}
 
 

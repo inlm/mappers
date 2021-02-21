@@ -66,9 +66,9 @@
 		}
 
 
-		public function getRelationshipColumn($sourceTable, $targetTable)
+		public function getRelationshipColumn($sourceTable, $targetTable, $relationshipName = NULL)
 		{
-			return $this->fallback->getRelationshipColumn($this->removePrefix($sourceTable), $this->removePrefix($targetTable));
+			return $this->fallback->getRelationshipColumn($this->removePrefix($sourceTable), $this->removePrefix($targetTable), $relationshipName);
 		}
 
 

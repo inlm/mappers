@@ -1,7 +1,9 @@
-
 # Inlm\Mappers
 
-[![Tests Status](https://github.com/inlm/mappers/workflows/Tests/badge.svg)](https://github.com/inlm/mappers/actions)
+[![Build Status](https://github.com/inlm/mappers/workflows/Build/badge.svg)](https://github.com/inlm/mappers/actions)
+[![Downloads this Month](https://img.shields.io/packagist/dm/inlm/mappers.svg)](https://packagist.org/packages/inlm/mappers)
+[![Latest Stable Version](https://poser.pugx.org/inlm/mappers/v/stable)](https://github.com/inlm/mappers/releases)
+[![License](https://img.shields.io/badge/license-New%20BSD-blue.svg)](https://github.com/inlm/mappers/blob/master/license.md)
 
 Mappers for Lean Mapper.
 

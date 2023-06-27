@@ -205,7 +205,7 @@ test(function () {
 
 	Assert::exception(function() use ($mapper) {
 		$mapper->registerFieldMapping(App\Entity\Client::class, 'website', function () {}, function () {});
-	}, Inlm\Mappers\DuplicateException::class, "Convertor for table 'client' and column 'website' (field App\Entity\Client::\$website) already exists.");
+	}, Inlm\Mappers\DuplicateException::class, "Convertor for table 'client' and column 'website' (field App\\Entity\\Client::\$website) already exists.");
 });
 
 
@@ -214,5 +214,5 @@ test(function () {
 	$mapper = new Inlm\Mappers\RowMapper;
 	Assert::exception(function() use ($mapper) {
 		$mapper->registerFieldMapping(Model\Entity\Client::class, 'website', NULL, NULL);
-	}, Inlm\Mappers\InvalidArgumentException::class, "Missing convertors for Model\Entity\Client::\$website, both are NULL.");
+	}, Inlm\Mappers\InvalidArgumentException::class, "Missing convertors for Model\\Entity\\Client::\$website, both are NULL.");
 });

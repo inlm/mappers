@@ -12,16 +12,16 @@
 		/** @var IMapper */
 		protected $fallback;
 
-		/** @var array  [tableName => entityClass] */
+		/** @var array<string, string>  [tableName => entityClass] */
 		protected $tableToEntity;
 
-		/** @var array  [tableName => primaryKey] */
+		/** @var array<string, string>  [tableName => primaryKey] */
 		protected $tablePrimaryKey;
 
-		/** @var array  [entityClass => tableName] */
+		/** @var array<string, string>  [entityClass => tableName] */
 		protected $entityToTable;
 
-		/** @var array  [repositoryClass => tableName] */
+		/** @var array<string, string>  [repositoryClass => tableName] */
 		protected $repositoryToTable;
 
 
@@ -31,24 +31,17 @@
 		}
 
 
-		/**
-		 * @param  string|NULL  table name in database
-		 * @param  string|NULL
-		 * @param  string|NULL
-		 * @param  string|NULL
-		 * @return static
-		 */
 		public function setMapping(string $tableName, ?string $entityClass = NULL, ?string $repositoryClass = NULL, ?string $primaryKey = NULL): self
 		{
 			if (isset($this->tableToEntity[$tableName])) {
 				throw new DuplicateException("Table '$tableName' is already registered for entity " . $this->tableToEntity[$tableName]);
 			}
 
-			if (isset($entityClass, $this->entityToTable[$entityClass])) {
+			if ($entityClass !== NULL && isset($this->entityToTable[$entityClass])) {
 				throw new DuplicateException("Entity $entityClass is already registered for table '{$this->entityToTable[$entityClass]}'");
 			}
 
-			if (isset($repositoryClass, $this->repositoryToTable[$repositoryClass])) {
+			if ($repositoryClass !== NULL && isset($this->repositoryToTable[$repositoryClass])) {
 				throw new DuplicateException("Repository $repositoryClass is already registered for table '{$this->repositoryToTable[$repositoryClass]}'");
 			}
 
@@ -57,7 +50,7 @@
 				$this->entityToTable[$entityClass] = $tableName;
 			}
 
-			if (is_string($repositoryClass)) {
+			if ($repositoryClass !== NULL) {
 				$this->repositoryToTable[$repositoryClass] = $tableName;
 			}
 

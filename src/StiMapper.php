@@ -14,13 +14,13 @@
 		/** @var IMapper */
 		private $fallback;
 
-		/** @var array  [baseEntity => [type => entity]] */
+		/** @var array<string, array<string|int, string>>  [baseEntity => [type => entity]] */
 		private $stiTypes;
 
-		/** @var array  [baseEntity => column] */
+		/** @var array<string, string>  [baseEntity => column] */
 		private $stiTypeColumns;
 
-		/** @var array  [entity => baseEntity] */
+		/** @var array<string, string>  [entity => baseEntity] */
 		private $stiEntities;
 
 
@@ -32,7 +32,7 @@
 
 		/**
 		 * @param  string|int $type
-		 * @return static
+		 * @return self
 		 */
 		public function registerStiType(string $baseEntity, $type, string $entity)
 		{
@@ -51,7 +51,7 @@
 
 
 		/**
-		 * @return static
+		 * @return self
 		 */
 		public function registerTypeField(string $baseEntity, string $typeField)
 		{

@@ -22,7 +22,7 @@
 		public function __construct(?string $prefix = '', IMapper $fallback = NULL)
 		{
 			$this->prefix = (string) $prefix;
-			$this->prefixLength = strlen($prefix);
+			$this->prefixLength = strlen($this->prefix);
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
 

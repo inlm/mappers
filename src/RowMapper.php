@@ -15,10 +15,10 @@
 		/** @var IMapper */
 		private $fallback;
 
-		/** @var array [tableName => column => [convertToRow, convertFromRow]] */
+		/** @var array<string, array<string, array<callable|NULL>>> [tableName => column => [convertToRow, convertFromRow]] */
 		private $mapping = [];
 
-		/** @var array [tableName => rowField => [convertToRow, convertFromRow]] */
+		/** @var array<string, array<string, array<callable|NULL>>> [tableName => rowField => [convertToRow, convertFromRow]] */
 		private $multiMapping = [];
 
 

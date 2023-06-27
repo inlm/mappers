@@ -46,7 +46,7 @@
 
 		protected static function toUnderScore(string $s): string
 		{
-			return lcfirst(preg_replace_callback('#(?<=.)([A-Z])#', function ($m) {
+			return lcfirst((string) preg_replace_callback('#(?<=.)([A-Z])#', function ($m) {
 				return '_' . strtolower($m[1]);
 			}, $s));
 		}
@@ -54,7 +54,7 @@
 
 		protected static function toCamelCase(string $s): string
 		{
-			return preg_replace_callback('#_(.)#', function ($m) {
+			return (string) preg_replace_callback('#_(.)#', function ($m) {
 				return strtoupper($m[1]);
 			}, $s);
 		}

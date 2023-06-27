@@ -29,7 +29,7 @@ function createRow(array $data): ?LeanMapper\Row
 
 function createFluent(string $tableName): Dibi\Fluent
 {
-	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'file' => __DIR__ . '/db.sq3', 'lazy' => TRUE]));
+	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'file' => ':memory:', 'lazy' => TRUE]));
 	$fluent->select('*')->from($tableName);
 	return $fluent;
 }

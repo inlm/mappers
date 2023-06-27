@@ -5,13 +5,16 @@ require __DIR__ . '/../vendor/autoload.php';
 Tester\Environment::setup();
 
 
-function test($cb)
+function test(callable $cb): void
 {
 	$cb();
 }
 
 
-function createRow(array $data)
+/**
+ * @param  array<string, mixed> $data
+ */
+function createRow(array $data): ?LeanMapper\Row
 {
 	$result = LeanMapper\Result::createDetachedInstance();
 	$row = $result->getRow();
@@ -24,7 +27,7 @@ function createRow(array $data)
 }
 
 
-function createFluent($tableName)
+function createFluent(string $tableName): Dibi\Fluent
 {
 	$fluent = new LeanMapper\Fluent(new LeanMapper\Connection(['driver' => 'sqlite3', 'file' => __DIR__ . '/db.sq3', 'lazy' => TRUE]));
 	$fluent->select('*')->from($tableName);

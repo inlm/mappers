@@ -21,7 +21,7 @@
 		protected $prefixLength;
 
 
-		public function __construct(?string $prefix = '', IMapper $fallback = NULL)
+		public function __construct(?string $prefix = '', ?IMapper $fallback = NULL)
 		{
 			$this->prefix = (string) $prefix;
 			$this->prefixLength = strlen($this->prefix);

@@ -24,7 +24,7 @@
 		private $multiMapping = [];
 
 
-		public function __construct(IMapper $fallback = NULL)
+		public function __construct(?IMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
@@ -33,7 +33,7 @@
 		/**
 		 * @return static
 		 */
-		public function registerFieldMapping(string $entity, string $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
+		public function registerFieldMapping(string $entity, string $field, ?callable $fromDbValue = NULL, ?callable $toDbValue = NULL)
 		{
 			if ($fromDbValue === NULL && $toDbValue === NULL) {
 				throw new InvalidArgumentException("Missing convertors for $entity::\$$field, both are NULL.");
@@ -57,7 +57,7 @@
 		/**
 		 * @return static
 		 */
-		public function registerMultiValueMapping(string $entity, string $field, callable $fromDbValue = NULL, callable $toDbValue = NULL)
+		public function registerMultiValueMapping(string $entity, string $field, ?callable $fromDbValue = NULL, ?callable $toDbValue = NULL)
 		{
 			if ($fromDbValue === NULL && $toDbValue === NULL) {
 				throw new InvalidArgumentException("Missing convertors for $entity::\$$field, both are NULL.");
@@ -90,7 +90,7 @@
 		}
 
 
-		public function getEntityClass(string $table, Row $row = NULL): string
+		public function getEntityClass(string $table, ?Row $row = NULL): string
 		{
 			return $this->fallback->getEntityClass($table, $row);
 		}
@@ -126,7 +126,7 @@
 		}
 
 
-		public function getImplicitFilters(string $entityClass, Caller $caller = null)
+		public function getImplicitFilters(string $entityClass, ?Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
 		}

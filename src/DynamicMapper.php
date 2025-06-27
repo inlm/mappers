@@ -27,7 +27,7 @@
 		protected $repositoryToTable;
 
 
-		public function __construct(IMapper $fallback = NULL)
+		public function __construct(?IMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}

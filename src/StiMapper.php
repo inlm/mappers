@@ -26,7 +26,7 @@
 		private $stiEntities;
 
 
-		public function __construct(IMapper $fallback = NULL)
+		public function __construct(?IMapper $fallback = NULL)
 		{
 			$this->fallback = $fallback ? $fallback : new \LeanMapper\DefaultMapper;
 		}
@@ -78,7 +78,7 @@
 		}
 
 
-		public function getEntityClass(string $table, Row $row = NULL): string
+		public function getEntityClass(string $table, ?Row $row = NULL): string
 		{
 			$baseEntity = $this->fallback->getEntityClass($table, NULL);
 
@@ -132,7 +132,7 @@
 		}
 
 
-		public function getImplicitFilters(string $entityClass, Caller $caller = null)
+		public function getImplicitFilters(string $entityClass, ?Caller $caller = null)
 		{
 			return $this->fallback->getImplicitFilters($entityClass, $caller);
 		}

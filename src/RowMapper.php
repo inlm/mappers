@@ -183,11 +183,11 @@
 									// throw new InvalidStateException("Column '$column' already exists in result.");
 								// }
 
-								$res[$column] = $value;
+								$res[(string) $column] = $value;
 							}
 
 						} else {
-							$res[$rowField] = $value;
+							$res[(string) $rowField] = $value;
 						}
 					}
 

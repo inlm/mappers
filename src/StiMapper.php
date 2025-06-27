@@ -94,7 +94,7 @@
 					return $this->stiTypes[$baseEntity][$type];
 
 				} else {
-					throw new \Inlm\Mappers\InvalidStateException("Unknow type '$type' for base entity $baseEntity.");
+					throw new \Inlm\Mappers\InvalidStateException("Unknow type " . (is_scalar($type) ? "'$type'" : ('<' . gettype($type) . '>')) . " for base entity $baseEntity.");
 				}
 			}
 
